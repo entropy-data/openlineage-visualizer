@@ -1,0 +1,448 @@
+.ol-node {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  min-width: 140px;
+  position: relative;
+}
+
+.ol-dataset-node {
+  border-color: #cbd5e1;
+}
+
+.ol-dataset-node:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.ol-job-node {
+  border-color: #a5b4fc;
+  background: #eef2ff;
+}
+
+.ol-node-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  cursor: default;
+}
+
+.ol-collapse-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ol-collapse-btn:hover {
+  color: #475569;
+}
+
+.ol-node-icon {
+  color: #64748b;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.ol-job-icon {
+  color: #6366f1;
+}
+
+.ol-node-title {
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.ol-badges {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.ol-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ol-badge-gray {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.ol-badge-blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* Hover popup */
+.ol-popup {
+  position: absolute;
+  z-index: 50;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+  width: 260px;
+  pointer-events: none;
+}
+
+.ol-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 8px 10px;
+}
+
+.ol-popup-title {
+  font-weight: 600;
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.ol-field-list {
+  border-top: 1px solid #e2e8f0;
+  padding: 2px 0;
+}
+
+.ol-field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 10px;
+  gap: 8px;
+}
+
+.ol-field-name {
+  color: #334155;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ol-field-type {
+  color: #94a3b8;
+  font-size: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ol-field-more {
+  color: #94a3b8;
+  font-size: 10px;
+  justify-content: center;
+  padding: 3px 10px;
+}
+
+.ol-job-meta {
+  display: flex;
+  gap: 4px;
+  padding: 0 10px 6px;
+  flex-wrap: wrap;
+}
+
+.ol-job-duration {
+  padding: 0 10px 8px;
+  color: #6366f1;
+  font-size: 11px;
+}
+
+/* Selected node highlight */
+.ol-node.selected,
+.react-flow__node.selected .ol-node {
+  outline: 2px solid #6366f1;
+  outline-offset: 1px;
+}
+
+/* Column lineage highlighting */
+.ol-node--dimmed {
+  opacity: 0.25;
+  transition: opacity 0.15s;
+}
+
+.ol-node--in-lineage {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px #6366f1, 0 1px 4px rgba(99, 102, 241, 0.2);
+}
+
+.ol-field-row--hl {
+  background: #eef2ff;
+  border-left: 3px solid #6366f1;
+  padding-left: 7px;
+}
+
+.ol-field-row--dimmed {
+  opacity: 0.3;
+}
+
+/* Detail panel — Marquez style */
+.ol-detail-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100%;
+  background: white;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+}
+
+.ol-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 20px 12px;
+  gap: 12px;
+}
+
+.ol-detail-title {
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.ol-detail-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ol-detail-close:hover {
+  color: #475569;
+}
+
+.ol-detail-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 20px 16px;
+}
+
+.ol-detail-meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ol-detail-meta-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ol-detail-badges {
+  display: flex;
+  gap: 6px;
+  padding: 0 20px 16px;
+  flex-wrap: wrap;
+}
+
+.ol-detail-section {
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 20px;
+}
+
+.ol-detail-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6366f1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.ol-detail-sql {
+  margin: 0;
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #334155;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+/* Field table in detail panel */
+.ol-detail-fields {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ol-detail-field + .ol-detail-field {
+  border-top: 1px solid #f1f5f9;
+}
+
+.ol-detail-field-row {
+  padding: 10px 16px;
+}
+
+.ol-detail-field-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ol-detail-field-row--clickable {
+  cursor: pointer;
+}
+
+.ol-detail-field-row--clickable:hover {
+  background: #f8fafc;
+}
+
+.ol-detail-field--open > .ol-detail-field-row {
+  background: #f8fafc;
+}
+
+.ol-detail-field-name {
+  color: #0f172a;
+  font-weight: 500;
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.ol-detail-field-type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #334155;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.ol-detail-field-desc {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* Column lineage within field row */
+.ol-detail-field-lineage {
+  padding: 4px 16px 10px 32px;
+  background: #f8fafc;
+}
+
+.ol-detail-field-source {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.ol-detail-field-source-arrow {
+  color: #94a3b8;
+  margin-right: 4px;
+}
+
+.ol-detail-field-source-ds {
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.ol-detail-field-source-dot {
+  color: #94a3b8;
+}
+
+.ol-detail-field-source-col {
+  color: #334155;
+  font-weight: 500;
+}
+
+/* References section */
+.ol-ref-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ol-ref-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ol-ref-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.ol-ref-link {
+  color: #6366f1;
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.ol-ref-link:hover {
+  text-decoration: underline;
+  color: #4f46e5;
+}
+
+.ol-ref-value {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* React Flow handle styling */
+.ol-node .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border: 1px solid white;
+}
