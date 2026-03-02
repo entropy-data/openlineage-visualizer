@@ -95,8 +95,14 @@ function getLayoutedElements(nodes, edges, collapsedSet, toggleCollapse) {
 /** Trace column lineage backward from a field, returning Map<nodeId, Set<fieldName>> */
 function traceColumnLineage(nodeId, fieldName, nodes) {
   const datasetMap = new Map();
+  const nsNameToId = new Map();
   for (const node of nodes) {
-    if (node.type === 'dataset') datasetMap.set(node.id, node.data);
+    if (node.type === 'dataset') {
+      datasetMap.set(node.id, node.data);
+      if (node.data.namespace && node.data.name) {
+        nsNameToId.set(`${node.data.namespace}:${node.data.name}`, node.id);
+      }
+    }
   }
 
   const result = new Map();
@@ -117,7 +123,8 @@ function traceColumnLineage(nodeId, fieldName, nodes) {
     if (!inputs) continue;
 
     for (const input of inputs) {
-      const inputNodeId = `${input.namespace}:${input.name}`;
+      const nsKey = `${input.namespace}:${input.name}`;
+      const inputNodeId = nsNameToId.get(nsKey) || nsKey;
       if (datasetMap.has(inputNodeId)) {
         queue.push({ nodeId: inputNodeId, fieldName: input.field });
       }

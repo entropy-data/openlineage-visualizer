@@ -114,7 +114,7 @@ function parseResponse(text) {
   // Try JSON first
   try {
     const data = JSON.parse(text);
-    // Already Marquez format
+    // Pre-built graph format
     if (data.graph) return data;
     // Array of OpenLineage events
     if (Array.isArray(data)) return openLineageToGraph(data);

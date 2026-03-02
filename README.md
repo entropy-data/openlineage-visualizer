@@ -2,7 +2,9 @@
 
 Visualizes OpenLineage events as a lineage graph using React Flow.
 
-Supports both Marquez graph format and raw OpenLineage events (JSON array or NDJSON).
+![Screenshot](docs/screenshot.png)
+
+Supports OpenLineage events as JSON array or NDJSON.
 
 ## Setup
 
@@ -30,7 +32,7 @@ Test events are included at `public/test-events.json`. By default `index.html` p
 
 ## Expected data formats
 
-The visualizer accepts three formats via the `data-json-url` endpoint:
+The visualizer accepts two formats via the `data-json-url` endpoint:
 
 ### 1. OpenLineage events (JSON array)
 
@@ -93,39 +95,6 @@ The visualizer accepts three formats via the `data-json-url` endpoint:
 
 Same event structure as above, one JSON object per line.
 
-### 3. Pre-built Marquez graph format
-
-```json
-{
-  "graph": [
-    {
-      "id": "my_scheduler:etl_job",
-      "type": "JOB",
-      "data": {
-        "name": "etl_job",
-        "namespace": "my_scheduler",
-        "status": "COMPLETE",
-        "sql": "SELECT ..."
-      },
-      "outEdges": [
-        { "origin": "my_scheduler:etl_job", "destination": "postgres://db:5432:public.output_table" }
-      ]
-    },
-    {
-      "id": "postgres://db:5432:public.input_table",
-      "type": "DATASET",
-      "data": {
-        "name": "public.input_table",
-        "namespace": "postgres://db:5432",
-        "fields": [{ "name": "id", "type": "INTEGER" }]
-      },
-      "outEdges": [
-        { "origin": "postgres://db:5432:public.input_table", "destination": "my_scheduler:etl_job" }
-      ]
-    }
-  ]
-}
-```
 
 ## Build
 
