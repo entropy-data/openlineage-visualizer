@@ -47,6 +47,44 @@ function ReferencesSection({ entropyData }) {
   );
 }
 
+function ProductScopingRow({ entry, role }) {
+  const color = entry.color;
+  const info = entry.info || {};
+  const label = info.name || entry.externalId;
+  const swatchStyle = color ? { backgroundColor: color.stripe } : { backgroundColor: '#9ca3af' };
+  return (
+    <div className="ol-product-scope-row">
+      <span className="ol-product-scope-swatch" style={swatchStyle} aria-hidden />
+      {info.href ? (
+        <a className="ol-product-scope-link" href={info.href} target="_top">{label}</a>
+      ) : (
+        <span className="ol-product-scope-name">{label}</span>
+      )}
+      <span className="ol-product-scope-role">{role}</span>
+    </div>
+  );
+}
+
+function ProductScopingSection({ scoping }) {
+  if (!scoping) return null;
+  const producers = scoping.producers || [];
+  const consumers = scoping.consumers || [];
+  if (producers.length === 0 && consumers.length === 0) return null;
+  return (
+    <div className="ol-detail-section">
+      <div className="ol-detail-section-title">Data Products</div>
+      <div className="ol-product-scope-list">
+        {producers.map((p) => (
+          <ProductScopingRow key={`p:${p.externalId}`} entry={p} role="producer" />
+        ))}
+        {consumers.map((c) => (
+          <ProductScopingRow key={`c:${c.externalId}`} entry={c} role="consumer" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FieldRow({ field, lineage, isSelected, onFieldClick }) {
   const sources = lineage?.inputFields || [];
   const hasLineage = sources.length > 0;
@@ -111,6 +149,7 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
             {data.jobType && <span className="ol-badge ol-badge-gray">{data.jobType}</span>}
             {data.processingType && <span className="ol-badge ol-badge-gray">{data.processingType}</span>}
           </div>
+          <ProductScopingSection scoping={data.productScoping} />
           <ReferencesSection entropyData={data.entropyData} />
           {data.sql && (
             <div className="ol-detail-section">
@@ -129,6 +168,7 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
               <span className="ol-detail-meta-value">{fields.length} columns</span>
             </div>
           )}
+          <ProductScopingSection scoping={data.productScoping} />
           <ReferencesSection entropyData={data.entropyData} />
           {fields.length > 0 && (
             <div className="ol-detail-section">

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
+import { ProductChipRow } from './ProductChip';
 
 const STATUS_COLORS = {
   COMPLETE: { bg: '#dcfce7', text: '#15803d' },
@@ -11,9 +12,14 @@ const STATUS_COLORS = {
 export default function JobNode({ data }) {
   const statusColor = STATUS_COLORS[data.status] || STATUS_COLORS.RUNNING;
   const displayName = data.name.includes('.') ? data.name.split('.').pop() : data.name;
+  const scoping = data.productScoping;
+  const stripeColor = scoping?.primary?.color?.stripe;
 
   return (
-    <div className={`ol-node ol-job-node${data.dimmed ? ' ol-node--dimmed' : ''}`}>
+    <div
+      className={`ol-node ol-job-node${data.dimmed ? ' ol-node--dimmed' : ''}${stripeColor ? ' ol-node--has-stripe' : ''}`}
+      style={stripeColor ? { borderLeftColor: stripeColor } : undefined}
+    >
       <Handle type="target" position={Position.Left} />
       <div className="ol-node-header">
         <div className="ol-node-icon ol-job-icon">
@@ -25,6 +31,7 @@ export default function JobNode({ data }) {
         </div>
         <span className="ol-node-title" title={`${data.namespace}/${data.name}`}>{displayName}</span>
       </div>
+      <ProductChipRow scoping={scoping} />
       <div className="ol-job-meta">
         {data.status && (
           <span

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
+import { ProductChipRow } from './ProductChip';
 
 export default function DatasetNode({ data }) {
   const fields = data.fields || [];
@@ -8,6 +9,8 @@ export default function DatasetNode({ data }) {
   const collapsed = data.collapsed;
   const highlightedFields = data.highlightedFields;
   const dimmed = data.dimmed;
+  const scoping = data.productScoping;
+  const stripeColor = scoping?.primary?.color?.stripe;
 
   const onChevronClick = (e) => {
     e.stopPropagation();
@@ -15,7 +18,10 @@ export default function DatasetNode({ data }) {
   };
 
   return (
-    <div className={`ol-node ol-dataset-node${dimmed ? ' ol-node--dimmed' : ''}${highlightedFields ? ' ol-node--in-lineage' : ''}`}>
+    <div
+      className={`ol-node ol-dataset-node${dimmed ? ' ol-node--dimmed' : ''}${highlightedFields ? ' ol-node--in-lineage' : ''}${stripeColor ? ' ol-node--has-stripe' : ''}`}
+      style={stripeColor ? { borderLeftColor: stripeColor } : undefined}
+    >
       <Handle type="target" position={Position.Left} />
       <div className="ol-node-header">
         <div className="ol-node-icon">
@@ -39,13 +45,20 @@ export default function DatasetNode({ data }) {
           </button>
         )}
       </div>
+      <ProductChipRow scoping={scoping} />
       {!collapsed && fields.length > 0 && (
         <div className="ol-field-list">
           {fields.map((f, i) => {
             const hl = highlightedFields?.has(f.name);
             const fieldDimmed = highlightedFields && !hl;
+            const hasLineage = !!(data.columnLineage?.[f.name]?.inputFields?.length);
+            const clickable = hasLineage && data.onFieldClick;
             return (
-              <div key={i} className={`ol-field-row${hl ? ' ol-field-row--hl' : ''}${fieldDimmed ? ' ol-field-row--dimmed' : ''}`}>
+              <div
+                key={i}
+                className={`ol-field-row${hl ? ' ol-field-row--hl' : ''}${fieldDimmed ? ' ol-field-row--dimmed' : ''}${clickable ? ' ol-field-row--clickable' : ''}`}
+                onClick={clickable ? (e) => { e.stopPropagation(); data.onFieldClick(data.nodeId, f.name); } : undefined}
+              >
                 <span className="ol-field-name">{f.name}</span>
                 {f.type && <span className="ol-field-type">{f.type}</span>}
               </div>
