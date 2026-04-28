@@ -1,0 +1,2 @@
+# npm install -g license-checker
+license-checker --production --unknown --onlyAllow="MIT;ISC;BSD-3-Clause" --excludePackages="openlineage-visualizer@0.1.0"
