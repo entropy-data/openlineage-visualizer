@@ -184,6 +184,31 @@ function decorateChild(orig, elkNode, parentId, collapsedSet, toggleCollapse) {
   };
 }
 
+// Resolve the upstream dataset for a columnLineage inputField reference.
+// Exact (namespace, name) is preferred; falls back to a same-namespace, same-
+// schema-prefix dataset that exposes a column matching the requested field
+// name (case-insensitive). This tolerates dbt-ol mixing the dbt-source logical
+// name in the dataset facet with the physical table name in the columnLineage
+// facet (e.g. `OP_PRICES_HISTORY_V1.snowflake_prices_history` as an event input
+// vs `OP_PRICES_HISTORY_V1.PRICES_HISTORY` in columnLineage.inputFields).
+function resolveUpstreamDataset(input, datasetMap, nsNameToId) {
+  const nsKey = `${input.namespace}:${input.name}`;
+  const exact = nsNameToId.get(nsKey);
+  if (exact && datasetMap.has(exact)) return exact;
+
+  if (!input.name || !input.name.includes('.')) return null;
+  const schemaPrefix = input.name.substring(0, input.name.lastIndexOf('.') + 1);
+  const wantField = (input.field || '').toLowerCase();
+  for (const [id, data] of datasetMap) {
+    if (data.namespace !== input.namespace) continue;
+    if (!data.name || !data.name.startsWith(schemaPrefix)) continue;
+    if (data.name === input.name) continue; // already covered by exact
+    const hasField = (data.fields || []).some((f) => f.name.toLowerCase() === wantField);
+    if (hasField) return id;
+  }
+  return null;
+}
+
 // Trace column lineage backward from a field, returning Map<nodeId, Set<fieldName>>.
 export function traceColumnLineage(nodeId, fieldName, nodes) {
   const datasetMap = new Map();
@@ -215,11 +240,17 @@ export function traceColumnLineage(nodeId, fieldName, nodes) {
     if (!inputs) continue;
 
     for (const input of inputs) {
-      const nsKey = `${input.namespace}:${input.name}`;
-      const inputNodeId = nsNameToId.get(nsKey) || nsKey;
-      if (datasetMap.has(inputNodeId)) {
-        queue.push({ nodeId: inputNodeId, fieldName: input.field });
-      }
+      const inputNodeId = resolveUpstreamDataset(input, datasetMap, nsNameToId);
+      if (!inputNodeId) continue;
+      const inputData = datasetMap.get(inputNodeId);
+      // OpenLineage column lineage can also disagree on field case: dbt-ol
+      // lowercases column refs from parsed SQL, but Snowflake's schema facet
+      // preserves uppercase. Resolve to the schema's spelling so the highlight
+      // Set matches what DatasetNode renders.
+      const schemaField = (inputData.fields || []).find(
+        (f) => f.name.toLowerCase() === input.field.toLowerCase()
+      );
+      queue.push({ nodeId: inputNodeId, fieldName: schemaField ? schemaField.name : input.field });
     }
   }
 
