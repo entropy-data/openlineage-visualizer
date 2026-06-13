@@ -4,12 +4,15 @@ import {
   ConnectionLineType,
   Background,
   Controls,
+  ControlButton,
+  useReactFlow,
 } from '@xyflow/react';
 import DatasetNode from './DatasetNode';
 import JobNode from './JobNode';
 import ProductGroupNode from './ProductGroupNode';
 import DetailPanel from './DetailPanel';
 import { getLayoutedElements, marquezToReactFlow, traceColumnLineage } from './layout';
+import { zoomInIcon, zoomOutIcon, fitViewIcon } from './controlIcons';
 
 import '@xyflow/react/dist/style.css';
 
@@ -18,6 +21,25 @@ const nodeTypes = {
   job: JobNode,
   productGroup: ProductGroupNode,
 };
+
+// Rendered as a child of <ReactFlow> so useReactFlow has access to the instance
+// without wrapping the whole canvas in a ReactFlowProvider.
+function CanvasControls() {
+  const { zoomIn, zoomOut, fitView } = useReactFlow();
+  return (
+    <Controls position="bottom-left" showZoom={false} showFitView={false} showInteractive={false}>
+      <ControlButton onClick={() => zoomIn()} title="Zoom in" aria-label="Zoom in">
+        {zoomInIcon}
+      </ControlButton>
+      <ControlButton onClick={() => zoomOut()} title="Zoom out" aria-label="Zoom out">
+        {zoomOutIcon}
+      </ControlButton>
+      <ControlButton onClick={() => fitView({ padding: 0.2 })} title="Fit view" aria-label="Fit view">
+        {fitViewIcon}
+      </ControlButton>
+    </Controls>
+  );
+}
 
 export default function LineageCanvas({
   graph,
@@ -206,7 +228,7 @@ export default function LineageCanvas({
         onPaneClick={onPaneClick}
       >
         <Background color="#e2e8f0" gap={20} />
-        <Controls position="bottom-left" showInteractive={false} />
+        <CanvasControls />
       </ReactFlow>
       <DetailPanel
         node={selectedNodeWithScoping}
