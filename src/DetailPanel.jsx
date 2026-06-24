@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const STATUS_COLORS = {
   COMPLETE: { bg: '#dcfce7', text: '#15803d' },
@@ -22,6 +23,7 @@ function ReferenceLink({ label, name, href }) {
 }
 
 function ReferencesSection({ entropyData }) {
+  const { t } = useTranslation();
   if (!entropyData) return null;
   const refs = [];
   if (entropyData.dataProductId || entropyData.dataProductName) {
@@ -39,7 +41,7 @@ function ReferencesSection({ entropyData }) {
   if (refs.length === 0) return null;
   return (
     <div className="ol-detail-section">
-      <div className="ol-detail-section-title">References</div>
+      <div className="ol-detail-section-title">{t("detail.references")}</div>
       <div className="ol-ref-list">
         {refs.map((r, i) => <ReferenceLink key={i} {...r} />)}
       </div>
@@ -66,19 +68,20 @@ function ProductScopingRow({ entry, role }) {
 }
 
 function ProductScopingSection({ scoping }) {
+  const { t } = useTranslation();
   if (!scoping) return null;
   const producers = scoping.producers || [];
   const consumers = scoping.consumers || [];
   if (producers.length === 0 && consumers.length === 0) return null;
   return (
     <div className="ol-detail-section">
-      <div className="ol-detail-section-title">Data Products</div>
+      <div className="ol-detail-section-title">{t("detail.dataProducts")}</div>
       <div className="ol-product-scope-list">
         {producers.map((p) => (
-          <ProductScopingRow key={`p:${p.externalId}`} entry={p} role="producer" />
+          <ProductScopingRow key={`p:${p.externalId}`} entry={p} role={t('detail.producer')} />
         ))}
         {consumers.map((c) => (
-          <ProductScopingRow key={`c:${c.externalId}`} entry={c} role="consumer" />
+          <ProductScopingRow key={`c:${c.externalId}`} entry={c} role={t('detail.consumer')} />
         ))}
       </div>
     </div>
@@ -123,6 +126,7 @@ function FieldRow({ field, lineage, isSelected, onFieldClick }) {
 }
 
 export default function DetailPanel({ node, onClose, selectedColumn, onFieldClick }) {
+  const { t } = useTranslation();
   if (!node) return null;
   const { data, type } = node;
   const fullName = data.namespace ? `${data.namespace}.${data.name}` : data.name;
@@ -153,7 +157,7 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
           <ReferencesSection entropyData={data.entropyData} />
           {data.sql && (
             <div className="ol-detail-section">
-              <div className="ol-detail-section-title">SQL</div>
+              <div className="ol-detail-section-title">{t("detail.sql")}</div>
               <pre className="ol-detail-sql">{data.sql}</pre>
             </div>
           )}
@@ -164,15 +168,15 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
         <>
           {fields.length > 0 && (
             <div className="ol-detail-meta">
-              <span className="ol-detail-meta-label">FIELDS</span>
-              <span className="ol-detail-meta-value">{fields.length} columns</span>
+              <span className="ol-detail-meta-label">{t("detail.fields")}</span>
+              <span className="ol-detail-meta-value">{t('detail.columns', { count: fields.length })}</span>
             </div>
           )}
           <ProductScopingSection scoping={data.productScoping} />
           <ReferencesSection entropyData={data.entropyData} />
           {fields.length > 0 && (
             <div className="ol-detail-section">
-              <div className="ol-detail-section-title">Schema</div>
+              <div className="ol-detail-section-title">{t("detail.schema")}</div>
               <div className="ol-detail-fields">
                 {fields.map((f, i) => (
                   <FieldRow

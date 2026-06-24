@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const MAX_SELECTED = 10;
 
@@ -11,6 +12,7 @@ export default function PickerPanel({
   productStatuses,
   onHoverProduct,
 }) {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -43,7 +45,7 @@ export default function PickerPanel({
         <button
           className="ol-picker-toggle"
           onClick={() => setCollapsed(false)}
-          title="Show data products"
+          title={t("picker.show")}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="9 18 15 12 9 6" />
@@ -56,11 +58,11 @@ export default function PickerPanel({
   return (
     <div className="ol-picker">
       <div className="ol-picker-header">
-        <span className="ol-picker-title">Data Products</span>
+        <span className="ol-picker-title">{t("picker.dataProducts")}</span>
         <button
           className="ol-picker-toggle"
           onClick={() => setCollapsed(true)}
-          title="Collapse"
+          title={t("picker.collapse")}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
@@ -70,14 +72,14 @@ export default function PickerPanel({
       <div className="ol-picker-search">
         <input
           type="text"
-          placeholder="Search…"
+          placeholder={t("picker.search")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       {atCap && (
         <div className="ol-picker-cap">
-          Maximum {MAX_SELECTED} products selected
+          {t('picker.maxSelected', { count: MAX_SELECTED })}
         </div>
       )}
       <div className="ol-picker-list">
@@ -127,7 +129,7 @@ export default function PickerPanel({
                 {p.name || p.externalId}
               </span>
               <span className="ol-picker-meta">
-                {!accessible && <span className="ol-picker-badge ol-picker-badge--locked" title="Restricted">lock</span>}
+                {!accessible && <span className="ol-picker-badge ol-picker-badge--locked" title={t("picker.restricted")}>lock</span>}
                 {hasLineage && <span className="ol-picker-badge ol-picker-badge--lineage">lineage</span>}
                 {status === 'loading' && <span className="ol-picker-spinner" aria-hidden />}
               </span>
@@ -136,7 +138,7 @@ export default function PickerPanel({
         })}
         {filtered.length === 0 && (
           <div className="ol-picker-cap" style={{ background: '#f8fafc', color: '#64748b', borderColor: '#e2e8f0' }}>
-            No data products
+            {t('picker.empty')}
           </div>
         )}
       </div>

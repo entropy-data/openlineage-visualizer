@@ -1,9 +1,17 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { I18nextProvider } from 'react-i18next';
 import App from './App';
 import MultiApp from './MultiApp';
+import i18n from './i18n';
 import { parseResponse } from './lineage';
 import './index.css';
+
+// Apply a host-supplied locale (it wins); when absent the detector configured in
+// ./i18n resolves the language (?lang / localStorage / navigator). See src/i18n.
+function applyLocale(locale) {
+  if (locale) i18n.changeLanguage(locale);
+}
 
 // ---- Single-mode (auto-mount) ----------------------------------------------
 // Backwards-compatible: the embedded preview on the data product details page
@@ -20,7 +28,12 @@ function mountSingle(container) {
       const data = parseResponse(text);
       if (!data.graph || data.graph.length === 0) return;
       container.style.height = height;
-      createRoot(container).render(<App graphData={data} />);
+      applyLocale(container.dataset.locale);
+      createRoot(container).render(
+        <I18nextProvider i18n={i18n}>
+          <App graphData={data} />
+        </I18nextProvider>,
+      );
     })
     .catch((err) => console.error('OpenLineage visualizer fetch error:', err));
 }
@@ -57,6 +70,7 @@ const DEFAULTS = {
   loadEvents: null,
   eventsEndpoint: null,
   height: 'calc(100vh - 44px)',
+  locale: null,
 };
 
 function resolveContainer(target) {
@@ -92,14 +106,17 @@ export function init(userConfig = {}) {
   }
 
   container.style.height = config.height;
+  applyLocale(config.locale);
   const root = createRoot(container);
   root.render(
-    <MultiApp
-      dataProducts={config.dataProducts}
-      currentProductExternalId={config.currentProductExternalId}
-      initialProducts={config.initialProducts}
-      loadEvents={loadEvents}
-    />,
+    <I18nextProvider i18n={i18n}>
+      <MultiApp
+        dataProducts={config.dataProducts}
+        currentProductExternalId={config.currentProductExternalId}
+        initialProducts={config.initialProducts}
+        loadEvents={loadEvents}
+      />
+    </I18nextProvider>,
   );
 
   return {

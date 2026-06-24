@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ReactFlow,
   ConnectionLineType,
@@ -25,16 +26,17 @@ const nodeTypes = {
 // Rendered as a child of <ReactFlow> so useReactFlow has access to the instance
 // without wrapping the whole canvas in a ReactFlowProvider.
 function CanvasControls() {
+  const { t } = useTranslation();
   const { zoomIn, zoomOut, fitView } = useReactFlow();
   return (
     <Controls position="bottom-left" showZoom={false} showFitView={false} showInteractive={false}>
-      <ControlButton onClick={() => zoomIn()} title="Zoom in" aria-label="Zoom in">
+      <ControlButton onClick={() => zoomIn()} title={t('controls.zoomIn')} aria-label={t('controls.zoomIn')}>
         {zoomInIcon}
       </ControlButton>
-      <ControlButton onClick={() => zoomOut()} title="Zoom out" aria-label="Zoom out">
+      <ControlButton onClick={() => zoomOut()} title={t('controls.zoomOut')} aria-label={t('controls.zoomOut')}>
         {zoomOutIcon}
       </ControlButton>
-      <ControlButton onClick={() => fitView({ padding: 0.2 })} title="Fit view" aria-label="Fit view">
+      <ControlButton onClick={() => fitView({ padding: 0.2 })} title={t('controls.fitView')} aria-label={t('controls.fitView')}>
         {fitViewIcon}
       </ControlButton>
     </Controls>

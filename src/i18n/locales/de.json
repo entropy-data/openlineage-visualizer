@@ -1,0 +1,26 @@
+{
+  "controls": {
+    "zoomIn": "Hineinzoomen",
+    "zoomOut": "Herauszoomen",
+    "fitView": "Ansicht einpassen"
+  },
+  "detail": {
+    "references": "Referenzen",
+    "dataProducts": "Datenprodukte",
+    "sql": "SQL",
+    "fields": "FELDER",
+    "schema": "Schema",
+    "producer": "Produzent",
+    "consumer": "Konsument",
+    "columns": "{{count}} Spalten"
+  },
+  "picker": {
+    "dataProducts": "Datenprodukte",
+    "empty": "Keine Datenprodukte",
+    "show": "Datenprodukte anzeigen",
+    "collapse": "Einklappen",
+    "search": "Suchen…",
+    "restricted": "Eingeschränkt",
+    "maxSelected": "Maximal {{count}} Datenprodukte ausgewählt"
+  }
+}
