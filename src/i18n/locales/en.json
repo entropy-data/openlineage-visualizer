@@ -1,0 +1,26 @@
+{
+  "controls": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "fitView": "Fit view"
+  },
+  "detail": {
+    "references": "References",
+    "dataProducts": "Data Products",
+    "sql": "SQL",
+    "fields": "FIELDS",
+    "schema": "Schema",
+    "producer": "producer",
+    "consumer": "consumer",
+    "columns": "{{count}} columns"
+  },
+  "picker": {
+    "dataProducts": "Data Products",
+    "empty": "No data products",
+    "show": "Show data products",
+    "collapse": "Collapse",
+    "search": "Search…",
+    "restricted": "Restricted",
+    "maxSelected": "Maximum {{count}} products selected"
+  }
+}
