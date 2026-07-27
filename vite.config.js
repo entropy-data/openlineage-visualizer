@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
@@ -14,12 +14,12 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     lib: {
-      entry: resolve(__dirname, 'src/main.jsx'),
+      entry: resolve(import.meta.dirname, 'src/main.jsx'),
       formats: ['es'],
       fileName: () => 'assets/index.js',
     },
     cssCodeSplit: false,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         exports: 'named',
         assetFileNames: (assetInfo) => {

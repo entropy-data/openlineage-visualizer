@@ -1,2 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 # npm install -g license-checker
-license-checker --production --unknown --onlyAllow="MIT;ISC;BSD-3-Clause" --excludePackages="openlineage-visualizer@0.1.0"
+#
+# Allowlist notes:
+#   MIT / ISC / BSD-3-Clause  — permissive, no obligations beyond attribution.
+#   EPL-2.0                   — elkjs (dual-licensed "EPL-2.0 OR GPL-3.0-or-later";
+#                               we take the EPL-2.0 option). Weak, file-level copyleft:
+#                               fine to bundle unmodified into a larger work. Do not
+#                               modify elkjs sources in-tree without legal review.
+license-checker \
+  --production \
+  --unknown \
+  --onlyAllow="MIT;ISC;BSD-3-Clause;EPL-2.0" \
+  --excludePrivatePackages
