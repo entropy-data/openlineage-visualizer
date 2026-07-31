@@ -17,10 +17,18 @@ function applyLocale(locale) {
 // Backwards-compatible: the embedded preview on the data product details page
 // renders a single product's lineage by setting data-json-url on the container.
 
+// `htmx:load` fires once per swapped-in element, so a host page with several
+// htmx fragments re-runs auto-mount many times for the same container. Tracking
+// the containers we already took keeps mounting idempotent — without it each
+// swap issues another lineage fetch and calls createRoot on a live root.
+const mountedContainers = new WeakSet();
+
 function mountSingle(container) {
   const jsonUrl = container.dataset.jsonUrl;
   const height = container.dataset.height || '400px';
   if (!jsonUrl) return;
+  if (mountedContainers.has(container)) return;
+  mountedContainers.add(container);
 
   fetch(jsonUrl, { credentials: 'same-origin' })
     .then((res) => res.text())
@@ -35,11 +43,20 @@ function mountSingle(container) {
         </I18nextProvider>,
       );
     })
-    .catch((err) => console.error('OpenLineage visualizer fetch error:', err));
+    .catch((err) => {
+      // Let a failed attempt be retried by a later swap rather than leaving the
+      // container permanently marked as mounted.
+      mountedContainers.delete(container);
+      console.error('OpenLineage visualizer fetch error:', err);
+    });
 }
 
-function autoMount() {
-  const container = document.getElementById('openlineage-visualizer');
+function autoMount(root = document) {
+  const scope = root instanceof Element || root instanceof Document ? root : document;
+  // The swapped-in fragment may be the container itself or merely contain it.
+  const container = scope instanceof Element && scope.id === 'openlineage-visualizer'
+    ? scope
+    : scope.querySelector('#openlineage-visualizer');
   if (!container) return;
   // Multi-mode is initialised explicitly via `init(config)`; auto-mount only
   // handles the single-mode embed via data-json-url.
@@ -48,12 +65,12 @@ function autoMount() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', autoMount);
+  document.addEventListener('DOMContentLoaded', () => autoMount(document));
 } else {
-  autoMount();
+  autoMount(document);
 }
 
-document.addEventListener('htmx:load', autoMount);
+document.addEventListener('htmx:load', (event) => autoMount(event.target));
 
 // ---- init(config) ----------------------------------------------------------
 // Explicit initialiser used by the multi-product expanded page. Mirrors the
