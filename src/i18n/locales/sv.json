@@ -1,0 +1,26 @@
+{
+  "controls": {
+    "zoomIn": "Zooma in",
+    "zoomOut": "Zooma ut",
+    "fitView": "Anpassa vy"
+  },
+  "detail": {
+    "references": "Referenser",
+    "dataProducts": "Data Products",
+    "sql": "SQL",
+    "fields": "FÄLT",
+    "schema": "Schema",
+    "producer": "producent",
+    "consumer": "konsument",
+    "columns": "{{count}} kolumner"
+  },
+  "picker": {
+    "dataProducts": "Data Products",
+    "empty": "Inga Data Products",
+    "show": "Visa Data Products",
+    "collapse": "Fäll ihop",
+    "search": "Sök…",
+    "restricted": "Begränsad",
+    "maxSelected": "Högst {{count}} produkter markerade"
+  }
+}

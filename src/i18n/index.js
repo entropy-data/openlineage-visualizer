@@ -3,6 +3,8 @@ import {initReactI18next} from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './locales/en.json';
 import de from './locales/de.json';
+import sv from './locales/sv.json';
+import fr from './locales/fr.json';
 
 /**
  * Scoped i18next instance for the OpenLineage Visualizer.
@@ -21,9 +23,9 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources: {en: {translation: en}, de: {translation: de}},
+    resources: {en: {translation: en}, de: {translation: de}, sv: {translation: sv}, fr: {translation: fr}},
     fallbackLng: 'en',
-    supportedLngs: ['en', 'de'],
+    supportedLngs: ['en', 'de', 'sv', 'fr'],
     load: 'languageOnly',
     detection: {
       order: ['querystring', 'localStorage', 'navigator'],
