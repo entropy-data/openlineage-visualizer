@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ReactFlow,
@@ -7,6 +7,7 @@ import {
   Controls,
   ControlButton,
   useReactFlow,
+  useUpdateNodeInternals,
 } from '@xyflow/react';
 import DatasetNode from './DatasetNode';
 import JobNode from './JobNode';
@@ -43,6 +44,29 @@ function CanvasControls() {
   );
 }
 
+// Keeps React Flow in step with each new layout. A layout hands React Flow new node objects, which drop the size React
+// Flow measured; a node whose size did not change is never measured again and stays hidden, so every node is measured
+// again. The view is fitted once a layout for a new graph is on screen: the products load one by one, and fitting only
+// on the first render fits the first product that arrived.
+function LayoutSync({ nodeIds, fitKey }) {
+  const updateNodeInternals = useUpdateNodeInternals();
+  const { fitView } = useReactFlow();
+  const fittedKey = useRef(null);
+  useEffect(() => {
+    if (nodeIds.length === 0) return undefined;
+    updateNodeInternals(nodeIds);
+    if (fittedKey.current === fitKey) return undefined;
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        fittedKey.current = fitKey;
+        fitView({ padding: 0.2 });
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [nodeIds, fitKey, updateNodeInternals, fitView]);
+  return null;
+}
+
 export default function LineageCanvas({
   graph,
   productColorMap,
@@ -54,7 +78,7 @@ export default function LineageCanvas({
   const [selectedNode, setSelectedNode] = useState(null);
   const [collapsedNodes, setCollapsedNodes] = useState(new Set());
   const [selectedColumn, setSelectedColumn] = useState(null);
-  const [layouted, setLayouted] = useState({ nodes: [], edges: [] });
+  const [layouted, setLayouted] = useState({ nodes: [], edges: [], fitKey: null });
 
   const toggleCollapse = useCallback((nodeId) => {
     setCollapsedNodes((prev) => {
@@ -84,7 +108,8 @@ export default function LineageCanvas({
       productInfoMap,
       productColorMap,
     }).then((result) => {
-      if (!cancelled) setLayouted(result);
+      // What the view is fitted for: the graph and the products, not a collapsed node.
+      if (!cancelled) setLayouted({ ...result, fitKey: rawNodes.map((n) => n.id).join('|') + '#' + (selectedProductExternalIds || []).join(',') });
     });
     return () => {
       cancelled = true;
@@ -121,6 +146,8 @@ export default function LineageCanvas({
     const node = rawNodes.find((n) => n.id === nodeId);
     if (node) setSelectedNode(node);
   }, [rawNodes]);
+
+  const layoutedNodeIds = useMemo(() => layouted.nodes.map((n) => n.id), [layouted]);
 
   // Decorate nodes with highlight + product scoping.
   const nodes = useMemo(() => {
@@ -231,6 +258,7 @@ export default function LineageCanvas({
       >
         <Background color="#e2e8f0" gap={20} />
         <CanvasControls />
+        <LayoutSync nodeIds={layoutedNodeIds} fitKey={layouted.fitKey} />
       </ReactFlow>
       <DetailPanel
         node={selectedNodeWithScoping}
