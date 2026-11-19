@@ -22,5 +22,9 @@
     "search": "Search…",
     "restricted": "Restricted",
     "maxSelected": "Maximum {{count}} products selected"
+  },
+  "job": {
+    "unassigned": "Not assigned",
+    "unassignedHint": "No data product holds this item. Open its asset to assign it."
   }
 }
