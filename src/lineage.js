@@ -124,11 +124,12 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
       const dsId = `${input.namespace}:${input.name}`;
       const fields = input.facets?.schema?.fields || [];
       const dsEntropyData = input.facets?.entropy_data;
+      const symlinks = input.facets?.symlinks;
       if (!datasets.has(dsId)) {
         datasets.set(dsId, {
           id: dsId,
           type: 'DATASET',
-          data: { name: input.name, namespace: input.namespace, fields, entropyData: dsEntropyData || undefined },
+          data: { name: input.name, namespace: input.namespace, fields, entropyData: dsEntropyData || undefined, symlinks: symlinks || undefined },
           producerProductExternalIds: new Set(),
           consumerProductExternalIds: new Set(),
           outEdges: [],
@@ -137,6 +138,7 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
         const d = datasets.get(dsId).data;
         if (fields.length > 0) d.fields = fields;
         if (dsEntropyData) d.entropyData = dsEntropyData;
+        if (symlinks) d.symlinks = symlinks;
       }
       if (!unassigned) tag(datasets.get(dsId), 'consumer');
       // The dataset's entropy_data facet may declare its owning product even
@@ -152,11 +154,12 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
       const fields = output.facets?.schema?.fields || [];
       const colLineage = output.facets?.columnLineage?.fields || {};
       const dsEntropyData = output.facets?.entropy_data;
+      const symlinks = output.facets?.symlinks;
       if (!datasets.has(dsId)) {
         datasets.set(dsId, {
           id: dsId,
           type: 'DATASET',
-          data: { name: output.name, namespace: output.namespace, fields, columnLineage: colLineage, entropyData: dsEntropyData || undefined },
+          data: { name: output.name, namespace: output.namespace, fields, columnLineage: colLineage, entropyData: dsEntropyData || undefined, symlinks: symlinks || undefined },
           producerProductExternalIds: new Set(),
           consumerProductExternalIds: new Set(),
           outEdges: [],
@@ -166,6 +169,7 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
         if (fields.length > 0) d.fields = fields;
         if (Object.keys(colLineage).length > 0) Object.assign(d.columnLineage ||= {}, colLineage);
         if (dsEntropyData) d.entropyData = dsEntropyData;
+        if (symlinks) d.symlinks = symlinks;
       }
       if (!unassigned) tag(datasets.get(dsId), 'producer');
       else if (!datasets.get(dsId).data.assetGroup) datasets.get(dsId).data.assetGroup = assetGroup;
@@ -201,6 +205,7 @@ export function mergeGraphs(perProductGraphs) {
         if ((ed.fields?.length || 0) > (xd.fields?.length || 0)) xd.fields = ed.fields;
         if (ed.columnLineage) Object.assign(xd.columnLineage ||= {}, ed.columnLineage);
         if (ed.entropyData && !xd.entropyData) xd.entropyData = ed.entropyData;
+        if (ed.symlinks && !xd.symlinks) xd.symlinks = ed.symlinks;
         if (ed.sql && !xd.sql) xd.sql = ed.sql;
         if (ed.status && !xd.status) xd.status = ed.status;
         if (ed.integration && !xd.integration) xd.integration = ed.integration;

@@ -1,9 +1,11 @@
 import ELK from 'elkjs/lib/elk.bundled.js';
+import { datasetDisplayOf } from './naming';
 
 const elk = new ELK();
 
 export const NODE_WIDTHS = { dataset: 240, job: 200 };
 const HEADER_HEIGHT = 34;
+const SUBTITLE_HEIGHT = 16;
 const CHIP_ROW_HEIGHT = 22;
 const FIELD_ROW_HEIGHT = 20;
 const FIELD_LIST_PADDING = 5;
@@ -13,10 +15,13 @@ export function getNodeHeight(node, collapsed) {
     || (node.data?.consumerProductExternalIds?.size || 0) > 0;
   const chipExtra = hasChip ? CHIP_ROW_HEIGHT : 0;
   if (node.type === 'job') return 80 + chipExtra;
+  // The line under the title: the platform and the schema, dataset or folder of the name.
+  const { platform, context } = datasetDisplayOf(node.data);
+  const subtitleExtra = platform || context ? SUBTITLE_HEIGHT : 0;
   const fields = node.data?.fields || [];
-  if (fields.length === 0) return 40 + chipExtra;
-  if (collapsed) return HEADER_HEIGHT + chipExtra;
-  return HEADER_HEIGHT + chipExtra + FIELD_LIST_PADDING + fields.length * FIELD_ROW_HEIGHT;
+  if (fields.length === 0) return 40 + subtitleExtra + chipExtra;
+  if (collapsed) return HEADER_HEIGHT + subtitleExtra + chipExtra;
+  return HEADER_HEIGHT + subtitleExtra + chipExtra + FIELD_LIST_PADDING + fields.length * FIELD_ROW_HEIGHT;
 }
 
 export function marquezToReactFlow(graph) {

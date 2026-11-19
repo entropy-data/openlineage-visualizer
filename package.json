@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "test": "node --test \"src/**/*.test.js\""
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

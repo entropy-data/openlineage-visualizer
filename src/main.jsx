@@ -5,6 +5,7 @@ import App from './App';
 import MultiApp from './MultiApp';
 import i18n from './i18n';
 import { parseResponse } from './lineage';
+import { IconBaseUrlContext } from './IntegrationIcon';
 import './index.css';
 
 // Apply a host-supplied locale (it wins); when absent the detector configured in
@@ -39,7 +40,9 @@ function mountSingle(container) {
       applyLocale(container.dataset.locale);
       createRoot(container).render(
         <I18nextProvider i18n={i18n}>
-          <App graphData={data} />
+          <IconBaseUrlContext.Provider value={container.dataset.iconBaseUrl || null}>
+            <App graphData={data} />
+          </IconBaseUrlContext.Provider>
         </I18nextProvider>,
       );
     })
@@ -88,6 +91,8 @@ const DEFAULTS = {
   eventsEndpoint: null,
   height: 'calc(100vh - 44px)',
   locale: null,
+  // Where the host serves platform icons as <key>.svg (e.g. '/assets/media/icons/'); null uses the inline glyphs.
+  iconBaseUrl: null,
 };
 
 function resolveContainer(target) {
@@ -127,12 +132,14 @@ export function init(userConfig = {}) {
   const root = createRoot(container);
   root.render(
     <I18nextProvider i18n={i18n}>
-      <MultiApp
-        dataProducts={config.dataProducts}
-        currentProductExternalId={config.currentProductExternalId}
-        initialProducts={config.initialProducts}
-        loadEvents={loadEvents}
-      />
+      <IconBaseUrlContext.Provider value={config.iconBaseUrl}>
+        <MultiApp
+          dataProducts={config.dataProducts}
+          currentProductExternalId={config.currentProductExternalId}
+          initialProducts={config.initialProducts}
+          loadEvents={loadEvents}
+        />
+      </IconBaseUrlContext.Provider>
     </I18nextProvider>,
   );
 
