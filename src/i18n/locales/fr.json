@@ -12,7 +12,10 @@
     "schema": "Schéma",
     "producer": "producteur",
     "consumer": "consommateur",
-    "columns": "{{count}} colonnes"
+    "columns": "{{count}} colonnes",
+    "platform": "Plateforme",
+    "namespace": "Namespace",
+    "name": "Nom"
   },
   "picker": {
     "dataProducts": "Data Products",

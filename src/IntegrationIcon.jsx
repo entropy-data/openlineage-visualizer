@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 // Tiny set of monochrome glyphs for the integration-icon strings the picker
 // surfaces. Anything not in this map falls back to a monogram circle, and
@@ -120,4 +120,31 @@ export default function IntegrationIcon({ name, size = 14, color }) {
       {path}
     </svg>
   );
+}
+
+// Where the host serves its icon set, e.g. `/assets/media/icons/` in Entropy Data: the icon key `kafka` is then
+// loaded from `/assets/media/icons/kafka.svg`. Without it the platform icons fall back to the inline glyphs above.
+export const IconBaseUrlContext = createContext(null);
+
+// The icon of a platform ({ label, icon } from naming.js). Renders `fallback` when there is no icon for it, so a
+// node keeps its generic glyph instead of a monogram, which says less than the platform's name next to it.
+export function PlatformIcon({ platform, size = 14, fallback = null }) {
+  const baseUrl = useContext(IconBaseUrlContext);
+  const [failed, setFailed] = useState(false);
+  const key = platform?.icon;
+  if (!key) return fallback;
+  if (baseUrl && !failed) {
+    return (
+      <img
+        src={`${baseUrl.replace(/\/?$/, '/')}${key}.svg`}
+        width={size}
+        height={size}
+        alt={platform.label}
+        onError={() => setFailed(true)}
+        style={{ display: 'inline-block', objectFit: 'contain', flexShrink: 0 }}
+      />
+    );
+  }
+  if (!PATHS[key]) return fallback;
+  return <IntegrationIcon name={key} size={size} />;
 }

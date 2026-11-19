@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { PlatformIcon } from './IntegrationIcon';
+import { datasetDisplay, datasetDisplayOf, jobDisplayOf } from './naming';
 
 const STATUS_COLORS = {
   COMPLETE: { bg: '#dcfce7', text: '#15803d' },
@@ -109,7 +111,7 @@ function FieldRow({ field, lineage, isSelected, onFieldClick }) {
       {isSelected && sources.length > 0 && (
         <div className="ol-detail-field-lineage">
           {sources.map((s, i) => {
-            const dsShort = s.name.includes('.') ? s.name.split('.').pop() : s.name;
+            const dsShort = datasetDisplay({ namespace: s.namespace, name: s.name }).label;
             return (
               <div key={i} className="ol-detail-field-source">
                 <span className="ol-detail-field-source-arrow">&larr;</span>
@@ -129,7 +131,7 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
   const { t } = useTranslation();
   if (!node) return null;
   const { data, type } = node;
-  const fullName = data.namespace ? `${data.namespace}.${data.name}` : data.name;
+  const { label, platform } = type === 'job' ? jobDisplayOf(data) : datasetDisplayOf(data);
   const fields = data.fields || [];
 
   const isFieldSelected = (fieldName) =>
@@ -138,8 +140,30 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
   return (
     <div className="ol-detail-panel">
       <div className="ol-detail-header">
-        <span className="ol-detail-title">{fullName}</span>
+        <span className="ol-detail-title">{label}</span>
         <button className="ol-detail-close" onClick={onClose}>&times;</button>
+      </div>
+
+      <div className="ol-detail-ident">
+        {platform && (
+          <div className="ol-ref-row">
+            <span className="ol-ref-label">{t('detail.platform')}</span>
+            <span className="ol-ref-value ol-detail-platform">
+              <PlatformIcon platform={platform} />
+              {platform.label}
+            </span>
+          </div>
+        )}
+        {data.namespace && (
+          <div className="ol-ref-row">
+            <span className="ol-ref-label">{t('detail.namespace')}</span>
+            <span className="ol-ref-value">{data.namespace}</span>
+          </div>
+        )}
+        <div className="ol-ref-row">
+          <span className="ol-ref-label">{t('detail.name')}</span>
+          <span className="ol-ref-value">{data.name}</span>
+        </div>
       </div>
 
       {type === 'job' && (
@@ -149,7 +173,6 @@ export default function DetailPanel({ node, onClose, selectedColumn, onFieldClic
               const c = STATUS_COLORS[data.status] || STATUS_COLORS.RUNNING;
               return <span className="ol-badge" style={{ backgroundColor: c.bg, color: c.text }}>{data.status}</span>;
             })()}
-            {data.integration && <span className="ol-badge ol-badge-gray">{data.integration}</span>}
             {data.jobType && <span className="ol-badge ol-badge-gray">{data.jobType}</span>}
             {data.processingType && <span className="ol-badge ol-badge-gray">{data.processingType}</span>}
           </div>

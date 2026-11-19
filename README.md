@@ -30,6 +30,28 @@ Test events are included at `public/test-events.json`. By default `index.html` p
 <div id="openlineage-visualizer" data-json-url="/test-events.json" data-height="500px"></div>
 ```
 
+Two more sets of events: `public/test-events-platforms.json` (a chain across Kafka, Spark, Impala, BigQuery, dbt and
+Starburst) and `public/test-events-fabric.json` (OneLake tables and Power BI items as the Fabric import of Entropy
+Data stores them). Point `data-json-url` at them to try them.
+
+## Node labels and platforms
+
+A node shows the part of its name a reader recognises, following the
+[OpenLineage naming conventions](https://openlineage.io/docs/spec/naming) of the namespace's scheme: the table of
+`{project}.{dataset}.{table}` or `{catalog}.{schema}.{table}`, the whole topic of a Kafka topic, the last segment of a
+file path, the whole display name of a Power BI item. The line under the title names the platform (from the scheme,
+e.g. `kafka://`, `bigquery`, `trino://`) and the rest of the name. Jobs name their platform from the `jobType` facet's
+`integration`. The full namespace and name are in the tooltip and the detail panel. See `src/naming.js`.
+
+Platform icons are inline glyphs by default. A host with its own icon set passes where it serves them as
+`<key>.svg`: `data-icon-base-url="/assets/media/icons/"` on the container, or `iconBaseUrl` in `init()`.
+
+## Tests
+
+```bash
+npm test
+```
+
 ## Expected data formats
 
 The visualizer accepts two formats via the `data-json-url` endpoint:

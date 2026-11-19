@@ -1,0 +1,80 @@
+[
+  {
+    "eventType": "COMPLETE",
+    "eventTime": "2026-11-18T06:00:00Z",
+    "producer": "https://entropy-data.com/integrations/fabric",
+    "run": {
+      "runId": "4a3f0c2e-1d7b-4f7e-9c51-000000000001",
+      "facets": {
+        "entropy_data": { "assetId": "fabric:tenant:ws:pipeline:load-orders", "assetName": "Load Orders", "assetHref": "/demo/assets/fabric:tenant:ws:pipeline:load-orders" }
+      }
+    },
+    "job": {
+      "namespace": "fabric://Sales Workspace",
+      "name": "Load Orders",
+      "facets": { "jobType": { "processingType": "BATCH", "integration": "FABRIC", "jobType": "PIPELINE" } }
+    },
+    "inputs": [
+      { "namespace": "abfss://9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f@onelake.dfs.fabric.microsoft.com", "name": "/1f0e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b/Tables/orders" }
+    ],
+    "outputs": [
+      { "namespace": "abfss://9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f@onelake.dfs.fabric.microsoft.com", "name": "/7c6b5a49-3827-4615-a4b3-c2d1e0f9a8b7/Tables/finance/fact_orders" }
+    ]
+  },
+  {
+    "eventType": "COMPLETE",
+    "eventTime": "2026-11-18T06:10:00Z",
+    "producer": "https://entropy-data.com/integrations/fabric",
+    "run": {
+      "runId": "4a3f0c2e-1d7b-4f7e-9c51-000000000002",
+      "facets": {
+        "entropy_data": { "dataProductId": "sales", "assetId": "fabric:tenant:ws:m1", "assetName": "Sales Model v2.1", "assetHref": "/demo/assets/fabric:tenant:ws:m1" }
+      }
+    },
+    "job": {
+      "namespace": "powerbi://Sales Workspace",
+      "name": "Sales Model v2.1",
+      "facets": { "jobType": { "processingType": "BATCH", "integration": "POWERBI", "jobType": "SEMANTIC_MODEL" } }
+    },
+    "inputs": [
+      { "namespace": "abfss://9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f@onelake.dfs.fabric.microsoft.com", "name": "/7c6b5a49-3827-4615-a4b3-c2d1e0f9a8b7/Tables/finance/fact_orders" },
+      { "namespace": "abfss://9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f@onelake.dfs.fabric.microsoft.com", "name": "/1f0e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b/Tables/dim_customer" }
+    ],
+    "outputs": [
+      {
+        "namespace": "powerbi://app.powerbi.com/groups/9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f",
+        "name": "Sales Model v2.1",
+        "facets": {
+          "schema": { "fields": [ { "name": "order_id", "type": "Int64" }, { "name": "customer", "type": "String" }, { "name": "amount", "type": "Decimal" } ] },
+          "entropy_data": { "dataProductId": "sales", "dataProductName": "Sales", "dataProductHref": "/demo/dataproducts/sales" }
+        }
+      }
+    ]
+  },
+  {
+    "eventType": "COMPLETE",
+    "eventTime": "2026-11-18T06:20:00Z",
+    "producer": "https://entropy-data.com/integrations/fabric",
+    "run": {
+      "runId": "4a3f0c2e-1d7b-4f7e-9c51-000000000003",
+      "facets": {
+        "entropy_data": { "dataProductId": "sales", "assetId": "fabric:tenant:ws:r1", "assetName": "Sales Report", "assetHref": "/demo/assets/fabric:tenant:ws:r1" }
+      }
+    },
+    "job": {
+      "namespace": "powerbi://Sales Workspace",
+      "name": "Sales Report",
+      "facets": { "jobType": { "processingType": "BATCH", "integration": "POWERBI", "jobType": "REPORT" } }
+    },
+    "inputs": [
+      { "namespace": "powerbi://app.powerbi.com/groups/9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f", "name": "Sales Model v2.1" }
+    ],
+    "outputs": [
+      {
+        "namespace": "powerbi://app.powerbi.com/groups/9b2c1e64-5f3a-4c47-9d8e-0a1b2c3d4e5f",
+        "name": "Sales Report",
+        "facets": { "entropy_data": { "dataProductId": "sales", "dataProductName": "Sales", "dataProductHref": "/demo/dataproducts/sales" } }
+      }
+    ]
+  }
+]

@@ -1,11 +1,20 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { ProductChipRow } from './ProductChip';
+import { PlatformIcon } from './IntegrationIcon';
+import { datasetDisplayOf } from './naming';
+
+const DATASET_GLYPH = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <ellipse cx="12" cy="5" rx="9" ry="3" />
+    <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+    <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+  </svg>
+);
 
 export default function DatasetNode({ data }) {
   const fields = data.fields || [];
-  const displayName = data.name.includes('.') ? data.name.split('.').pop() : data.name;
-  const fullName = data.namespace ? `${data.namespace} / ${data.name}` : data.name;
+  const { label, context, platform, fullName } = datasetDisplayOf(data);
   const collapsed = data.collapsed;
   const highlightedFields = data.highlightedFields;
   const dimmed = data.dimmed;
@@ -25,13 +34,9 @@ export default function DatasetNode({ data }) {
       <Handle type="target" position={Position.Left} />
       <div className="ol-node-header">
         <div className="ol-node-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <ellipse cx="12" cy="5" rx="9" ry="3" />
-            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
-            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
-          </svg>
+          <PlatformIcon platform={platform} fallback={DATASET_GLYPH} />
         </div>
-        <span className="ol-node-title" title={fullName}>{displayName}</span>
+        <span className="ol-node-title" title={fullName}>{label}</span>
         {fields.length > 0 && (
           <span className="ol-badge ol-badge-gray">{fields.length}</span>
         )}
@@ -45,6 +50,13 @@ export default function DatasetNode({ data }) {
           </button>
         )}
       </div>
+      {(platform || context) && (
+        <div className="ol-node-subtitle" title={fullName}>
+          {platform && <span className="ol-node-platform">{platform.label}</span>}
+          {platform && context && <span className="ol-node-subtitle-sep">·</span>}
+          {context && <span className="ol-node-context">{context}</span>}
+        </div>
+      )}
       <ProductChipRow scoping={scoping} />
       {!collapsed && fields.length > 0 && (
         <div className="ol-field-list">

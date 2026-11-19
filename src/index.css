@@ -65,6 +65,50 @@
   flex: 1;
 }
 
+/* Under the title of a dataset: its platform, and the schema, dataset or folder its name lives in. */
+.ol-node-subtitle {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: -4px;
+  padding: 0 10px 6px 30px;
+  font-size: 10px;
+  line-height: 14px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ol-node-platform {
+  font-weight: 600;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.ol-node-subtitle-sep {
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.ol-node-context {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.ol-detail-ident {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 20px 16px;
+}
+
+.ol-detail-platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .ol-badges {
   display: flex;
   gap: 4px;

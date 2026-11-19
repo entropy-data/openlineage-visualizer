@@ -1,0 +1,1299 @@
+[
+ {
+  "eventType": "RUNNING",
+  "eventTime": "2026-11-14T07:00:00.000Z",
+  "producer": "https://entropy-data.com",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+   "runId": "87d3cd51-8d49-1d33-ab03-aae8ff38b747",
+   "facets": {
+    "entropy_data": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataRunFacet.json",
+     "dataProductId": "payment-transactions",
+     "outputPortId": "transactions_v1"
+    }
+   }
+  },
+  "job": {
+   "namespace": "kafka-connect-openshift",
+   "name": "ingest.ingest_payment_transactions",
+   "facets": {
+    "jobType": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobTypeJobFacet.json",
+     "processingType": "STREAMING",
+     "integration": "KAFKA_CONNECT",
+     "jobType": "JOB"
+    }
+   }
+  },
+  "inputs": [
+   {
+    "namespace": "kafka://kafka-bootstrap.openshift.bank.internal:9093",
+    "name": "bank.payments.events.v1",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "payments-hub",
+      "dataProductName": "Payments Hub (SEPA, Instant, CB, Wero)",
+      "dataProductHref": "/dataproducts/payments-hub",
+      "outputPortId": "payment_events_v1",
+      "outputPortName": "payment_events_v1",
+      "dataContractId": "payment_events_v1"
+     }
+    }
+   }
+  ],
+  "outputs": [
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_transactions_v1.transactions",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "payment-transactions",
+      "dataProductName": "Payment Transactions",
+      "dataProductHref": "/dataproducts/payment-transactions",
+      "outputPortId": "transactions_v1",
+      "outputPortName": "Payment Transactions",
+      "dataContractId": "transactions_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "transaction_id",
+        "type": "string"
+       },
+       {
+        "name": "account_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "booking_date",
+        "type": "date"
+       },
+       {
+        "name": "transaction_type",
+        "type": "string"
+       },
+       {
+        "name": "direction",
+        "type": "string"
+       },
+       {
+        "name": "amount_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "counterparty_name",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_iban",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_country",
+        "type": "string"
+       },
+       {
+        "name": "merchant_category",
+        "type": "string"
+       },
+       {
+        "name": "remittance_info",
+        "type": "string"
+       },
+       {
+        "name": "channel",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ },
+ {
+  "eventType": "COMPLETE",
+  "eventTime": "2026-11-10T22:00:00.000Z",
+  "producer": "https://entropy-data.com",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+   "runId": "99c145e4-db1c-8a1a-33bc-d3aef4846e50",
+   "facets": {
+    "entropy_data": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataRunFacet.json",
+     "dataProductId": "loan-book-history",
+     "outputPortId": "loan_book_history_v1"
+    }
+   }
+  },
+  "job": {
+   "namespace": "cloudera-cde",
+   "name": "spark.snapshot_loan_book",
+   "facets": {
+    "jobType": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobTypeJobFacet.json",
+     "processingType": "BATCH",
+     "integration": "SPARK",
+     "jobType": "JOB"
+    }
+   }
+  },
+  "inputs": [
+   {
+    "namespace": "kafka://kafka-bootstrap.openshift.bank.internal:9093",
+    "name": "bank.core-banking.events.v1",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "core-banking-system",
+      "dataProductName": "Core Banking Platform",
+      "dataProductHref": "/dataproducts/core-banking-system",
+      "outputPortId": "core_banking_events_v1",
+      "outputPortName": "core_banking_events_v1",
+      "dataContractId": "core_banking_events_v1"
+     }
+    }
+   },
+   {
+    "namespace": "sftp://legacy-sas-risk-marts.bank.internal",
+    "name": "sas_risk_marts_v1",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "legacy-sas-risk-marts",
+      "dataProductName": "Legacy SAS Risk Data Marts",
+      "dataProductHref": "/dataproducts/legacy-sas-risk-marts",
+      "outputPortId": "sas_risk_marts_v1",
+      "outputPortName": "sas_risk_marts_v1"
+     }
+    }
+   }
+  ],
+  "outputs": [
+   {
+    "namespace": "impala://impala.cdp.bank.internal",
+    "name": "risk_history.loan_book_history",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "loan-book-history",
+      "dataProductName": "Retail Loan Book History",
+      "dataProductHref": "/dataproducts/loan-book-history",
+      "outputPortId": "loan_book_history_v1",
+      "outputPortName": "Retail Loan Book History",
+      "dataContractId": "loan_book_history_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "snapshot_month",
+        "type": "date"
+       },
+       {
+        "name": "loan_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "product",
+        "type": "string"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "default_flag",
+        "type": "boolean"
+       },
+       {
+        "name": "loss_eur",
+        "type": "decimal(14,2)"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ },
+ {
+  "eventType": "COMPLETE",
+  "eventTime": "2026-11-16T03:00:00.000Z",
+  "producer": "https://entropy-data.com",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+   "runId": "25fd6c42-1918-6d50-1f44-7798ad8bb9a7",
+   "facets": {
+    "entropy_data": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataRunFacet.json",
+     "dataProductId": "home-loan-portfolio",
+     "outputPortId": "mortgages_v1"
+    }
+   }
+  },
+  "job": {
+   "namespace": "cloudera-cde",
+   "name": "spark.build_home_loan_portfolio",
+   "facets": {
+    "jobType": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobTypeJobFacet.json",
+     "processingType": "BATCH",
+     "integration": "SPARK",
+     "jobType": "JOB"
+    }
+   }
+  },
+  "inputs": [
+   {
+    "namespace": "kafka://kafka-bootstrap.openshift.bank.internal:9093",
+    "name": "bank.core-banking.events.v1",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "core-banking-system",
+      "dataProductName": "Core Banking Platform",
+      "dataProductHref": "/dataproducts/core-banking-system",
+      "outputPortId": "core_banking_events_v1",
+      "outputPortName": "core_banking_events_v1",
+      "dataContractId": "core_banking_events_v1"
+     }
+    }
+   },
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_mortgage_applications_v1.mortgage_applications",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "home-loan-origination",
+      "dataProductName": "Home Loan Origination",
+      "dataProductHref": "/dataproducts/home-loan-origination",
+      "outputPortId": "mortgage_applications_v1",
+      "outputPortName": "Home Loan Applications",
+      "dataContractId": "mortgage_applications_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "application_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "channel",
+        "type": "string"
+       },
+       {
+        "name": "applied_at",
+        "type": "timestamp"
+       },
+       {
+        "name": "property_type",
+        "type": "string"
+       },
+       {
+        "name": "purpose",
+        "type": "string"
+       },
+       {
+        "name": "new_build",
+        "type": "boolean"
+       },
+       {
+        "name": "loan_amount_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "duration_months",
+        "type": "int"
+       },
+       {
+        "name": "debt_service_ratio",
+        "type": "decimal(5,4)"
+       },
+       {
+        "name": "hcsf_exception",
+        "type": "boolean"
+       },
+       {
+        "name": "ptz_amount_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "decision",
+        "type": "string"
+       },
+       {
+        "name": "decided_at",
+        "type": "timestamp"
+       }
+      ]
+     }
+    }
+   }
+  ],
+  "outputs": [
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_mortgages_v1.mortgages",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "home-loan-portfolio",
+      "dataProductName": "Home Loan Portfolio",
+      "dataProductHref": "/dataproducts/home-loan-portfolio",
+      "outputPortId": "mortgages_v1",
+      "outputPortName": "Home Loan Portfolio",
+      "dataContractId": "mortgages_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "mortgage_id",
+        "type": "string"
+       },
+       {
+        "name": "application_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "disbursed_date",
+        "type": "date"
+       },
+       {
+        "name": "principal_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "interest_rate",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "rate_type",
+        "type": "string"
+       },
+       {
+        "name": "maturity_date",
+        "type": "date"
+       },
+       {
+        "name": "guarantee_type",
+        "type": "string"
+       },
+       {
+        "name": "borrower_insurance_policy_id",
+        "type": "string"
+       },
+       {
+        "name": "days_past_due",
+        "type": "int"
+       },
+       {
+        "name": "mortgage_status",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "impala://impala.cdp.bank.internal",
+    "name": "home_loans.mortgages",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "home-loan-portfolio",
+      "dataProductName": "Home Loan Portfolio",
+      "dataProductHref": "/dataproducts/home-loan-portfolio",
+      "outputPortId": "mortgages_v1",
+      "outputPortName": "Home Loan Portfolio",
+      "dataContractId": "mortgages_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "mortgage_id",
+        "type": "string"
+       },
+       {
+        "name": "application_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "disbursed_date",
+        "type": "date"
+       },
+       {
+        "name": "principal_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "interest_rate",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "rate_type",
+        "type": "string"
+       },
+       {
+        "name": "maturity_date",
+        "type": "date"
+       },
+       {
+        "name": "guarantee_type",
+        "type": "string"
+       },
+       {
+        "name": "borrower_insurance_policy_id",
+        "type": "string"
+       },
+       {
+        "name": "days_past_due",
+        "type": "int"
+       },
+       {
+        "name": "mortgage_status",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ },
+ {
+  "eventType": "COMPLETE",
+  "eventTime": "2026-11-16T21:00:00.000Z",
+  "producer": "https://entropy-data.com",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+   "runId": "d75cd439-955a-978c-bd9b-b888a06ce115",
+   "facets": {
+    "entropy_data": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataRunFacet.json",
+     "dataProductId": "credit-risk-parameters",
+     "outputPortId": "credit_risk_parameters_v1"
+    }
+   }
+  },
+  "job": {
+   "namespace": "cloud-composer",
+   "name": "dbt.irb_ifrs9_parameters",
+   "facets": {
+    "jobType": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobTypeJobFacet.json",
+     "processingType": "BATCH",
+     "integration": "DBT",
+     "jobType": "JOB"
+    }
+   }
+  },
+  "inputs": [
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_mortgages_v1.mortgages",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "home-loan-portfolio",
+      "dataProductName": "Home Loan Portfolio",
+      "dataProductHref": "/dataproducts/home-loan-portfolio",
+      "outputPortId": "mortgages_v1",
+      "outputPortName": "Home Loan Portfolio",
+      "dataContractId": "mortgages_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "mortgage_id",
+        "type": "string"
+       },
+       {
+        "name": "application_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "disbursed_date",
+        "type": "date"
+       },
+       {
+        "name": "principal_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "interest_rate",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "rate_type",
+        "type": "string"
+       },
+       {
+        "name": "maturity_date",
+        "type": "date"
+       },
+       {
+        "name": "guarantee_type",
+        "type": "string"
+       },
+       {
+        "name": "borrower_insurance_policy_id",
+        "type": "string"
+       },
+       {
+        "name": "days_past_due",
+        "type": "int"
+       },
+       {
+        "name": "mortgage_status",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "impala://impala.cdp.bank.internal",
+    "name": "home_loans.mortgages",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "home-loan-portfolio",
+      "dataProductName": "Home Loan Portfolio",
+      "dataProductHref": "/dataproducts/home-loan-portfolio",
+      "outputPortId": "mortgages_v1",
+      "outputPortName": "Home Loan Portfolio",
+      "dataContractId": "mortgages_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "mortgage_id",
+        "type": "string"
+       },
+       {
+        "name": "application_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "disbursed_date",
+        "type": "date"
+       },
+       {
+        "name": "principal_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "interest_rate",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "rate_type",
+        "type": "string"
+       },
+       {
+        "name": "maturity_date",
+        "type": "date"
+       },
+       {
+        "name": "guarantee_type",
+        "type": "string"
+       },
+       {
+        "name": "borrower_insurance_policy_id",
+        "type": "string"
+       },
+       {
+        "name": "days_past_due",
+        "type": "int"
+       },
+       {
+        "name": "mortgage_status",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_current_accounts_v1.current_accounts",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "current-accounts",
+      "dataProductName": "Current Accounts",
+      "dataProductHref": "/dataproducts/current-accounts",
+      "outputPortId": "current_accounts_v1",
+      "outputPortName": "Current Accounts",
+      "dataContractId": "current_accounts_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "account_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "iban",
+        "type": "string"
+       },
+       {
+        "name": "regional_bank",
+        "type": "string"
+       },
+       {
+        "name": "product",
+        "type": "string"
+       },
+       {
+        "name": "opened_date",
+        "type": "date"
+       },
+       {
+        "name": "closed_date",
+        "type": "date"
+       },
+       {
+        "name": "account_status",
+        "type": "string"
+       },
+       {
+        "name": "authorised_overdraft_eur",
+        "type": "decimal(12,2)"
+       },
+       {
+        "name": "balance_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "salary_domiciled",
+        "type": "boolean"
+       },
+       {
+        "name": "fragile_customer_offer",
+        "type": "boolean"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_counterparties_v1.counterparties",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "cib-counterparties",
+      "dataProductName": "CIB Counterparties",
+      "dataProductHref": "/dataproducts/cib-counterparties",
+      "outputPortId": "counterparties_v1",
+      "outputPortName": "CIB Counterparties",
+      "dataContractId": "counterparties_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "counterparty_id",
+        "type": "string"
+       },
+       {
+        "name": "legal_name",
+        "type": "string"
+       },
+       {
+        "name": "lei",
+        "type": "string"
+       },
+       {
+        "name": "siren",
+        "type": "string"
+       },
+       {
+        "name": "country",
+        "type": "string"
+       },
+       {
+        "name": "sector",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_type",
+        "type": "string"
+       },
+       {
+        "name": "internal_rating",
+        "type": "string"
+       },
+       {
+        "name": "exposure_limit_eur",
+        "type": "decimal(16,2)"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "impala://impala.cdp.bank.internal",
+    "name": "risk_history.loan_book_history",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "loan-book-history",
+      "dataProductName": "Retail Loan Book History",
+      "dataProductHref": "/dataproducts/loan-book-history",
+      "outputPortId": "loan_book_history_v1",
+      "outputPortName": "Retail Loan Book History",
+      "dataContractId": "loan_book_history_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "snapshot_month",
+        "type": "date"
+       },
+       {
+        "name": "loan_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "product",
+        "type": "string"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "default_flag",
+        "type": "boolean"
+       },
+       {
+        "name": "loss_eur",
+        "type": "decimal(14,2)"
+       }
+      ]
+     }
+    }
+   }
+  ],
+  "outputs": [
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_credit_risk_parameters_v1.credit_risk_parameters",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "credit-risk-parameters",
+      "dataProductName": "Credit Risk Parameters (IRB & IFRS 9)",
+      "dataProductHref": "/dataproducts/credit-risk-parameters",
+      "outputPortId": "credit_risk_parameters_v1",
+      "outputPortName": "Credit Risk Parameters",
+      "dataContractId": "credit_risk_parameters_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "exposure_id",
+        "type": "string"
+       },
+       {
+        "name": "as_of_date",
+        "type": "date"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_id",
+        "type": "string"
+       },
+       {
+        "name": "exposure_class",
+        "type": "string"
+       },
+       {
+        "name": "approach",
+        "type": "string"
+       },
+       {
+        "name": "rating_grade",
+        "type": "string"
+       },
+       {
+        "name": "pd",
+        "type": "decimal(8,6)"
+       },
+       {
+        "name": "lgd",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "ead_eur",
+        "type": "decimal(16,2)"
+       },
+       {
+        "name": "ifrs9_stage",
+        "type": "int"
+       },
+       {
+        "name": "ecl_eur",
+        "type": "decimal(14,2)"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ },
+ {
+  "eventType": "COMPLETE",
+  "eventTime": "2026-11-14T18:00:00.000Z",
+  "producer": "https://entropy-data.com",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+   "runId": "0eb8cbd4-b2e9-5174-baef-8a42d95a1b1a",
+   "facets": {
+    "entropy_data": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataRunFacet.json",
+     "dataProductId": "group-risk-data-aggregation",
+     "outputPortId": "group_risk_exposures_v1"
+    }
+   }
+  },
+  "job": {
+   "namespace": "starburst",
+   "name": "starburst.group_risk_exposures",
+   "facets": {
+    "jobType": {
+     "_producer": "https://entropy-data.com",
+     "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobTypeJobFacet.json",
+     "processingType": "BATCH",
+     "integration": "TRINO",
+     "jobType": "JOB"
+    }
+   }
+  },
+  "inputs": [
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_credit_risk_parameters_v1.credit_risk_parameters",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "credit-risk-parameters",
+      "dataProductName": "Credit Risk Parameters (IRB & IFRS 9)",
+      "dataProductHref": "/dataproducts/credit-risk-parameters",
+      "outputPortId": "credit_risk_parameters_v1",
+      "outputPortName": "Credit Risk Parameters",
+      "dataContractId": "credit_risk_parameters_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "exposure_id",
+        "type": "string"
+       },
+       {
+        "name": "as_of_date",
+        "type": "date"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_id",
+        "type": "string"
+       },
+       {
+        "name": "exposure_class",
+        "type": "string"
+       },
+       {
+        "name": "approach",
+        "type": "string"
+       },
+       {
+        "name": "rating_grade",
+        "type": "string"
+       },
+       {
+        "name": "pd",
+        "type": "decimal(8,6)"
+       },
+       {
+        "name": "lgd",
+        "type": "decimal(6,4)"
+       },
+       {
+        "name": "ead_eur",
+        "type": "decimal(16,2)"
+       },
+       {
+        "name": "ifrs9_stage",
+        "type": "int"
+       },
+       {
+        "name": "ecl_eur",
+        "type": "decimal(14,2)"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_market_risk_var_v1.market_risk_var",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "market-risk",
+      "dataProductName": "Market Risk (VaR & Stressed VaR)",
+      "dataProductHref": "/dataproducts/market-risk",
+      "outputPortId": "market_risk_var_v1",
+      "outputPortName": "Market Risk VaR",
+      "dataContractId": "market_risk_var_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "as_of_date",
+        "type": "date"
+       },
+       {
+        "name": "desk",
+        "type": "string"
+       },
+       {
+        "name": "var_99_1d_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "stressed_var_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "var_limit_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "hypothetical_pnl_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "backtesting_exception",
+        "type": "boolean"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "bigquery",
+    "name": "demo-project.bank_counterparties_v1.counterparties",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "cib-counterparties",
+      "dataProductName": "CIB Counterparties",
+      "dataProductHref": "/dataproducts/cib-counterparties",
+      "outputPortId": "counterparties_v1",
+      "outputPortName": "CIB Counterparties",
+      "dataContractId": "counterparties_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "counterparty_id",
+        "type": "string"
+       },
+       {
+        "name": "legal_name",
+        "type": "string"
+       },
+       {
+        "name": "lei",
+        "type": "string"
+       },
+       {
+        "name": "siren",
+        "type": "string"
+       },
+       {
+        "name": "country",
+        "type": "string"
+       },
+       {
+        "name": "sector",
+        "type": "string"
+       },
+       {
+        "name": "counterparty_type",
+        "type": "string"
+       },
+       {
+        "name": "internal_rating",
+        "type": "string"
+       },
+       {
+        "name": "exposure_limit_eur",
+        "type": "decimal(16,2)"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "namespace": "impala://impala.cdp.bank.internal",
+    "name": "risk_history.loan_book_history",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "loan-book-history",
+      "dataProductName": "Retail Loan Book History",
+      "dataProductHref": "/dataproducts/loan-book-history",
+      "outputPortId": "loan_book_history_v1",
+      "outputPortName": "Retail Loan Book History",
+      "dataContractId": "loan_book_history_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "snapshot_month",
+        "type": "date"
+       },
+       {
+        "name": "loan_id",
+        "type": "string"
+       },
+       {
+        "name": "customer_id",
+        "type": "string"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "product",
+        "type": "string"
+       },
+       {
+        "name": "outstanding_eur",
+        "type": "decimal(14,2)"
+       },
+       {
+        "name": "default_flag",
+        "type": "boolean"
+       },
+       {
+        "name": "loss_eur",
+        "type": "decimal(14,2)"
+       }
+      ]
+     }
+    }
+   }
+  ],
+  "outputs": [
+   {
+    "namespace": "trino://starburst.data.bank.internal:443",
+    "name": "datamart.group_risk.group_risk_exposures",
+    "facets": {
+     "entropy_data": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://entropy-data.com/spec/facets/1-0-0/EntropyDataDatasetFacet.json",
+      "dataProductId": "group-risk-data-aggregation",
+      "dataProductName": "Group Risk Data Aggregation (BCBS 239)",
+      "dataProductHref": "/dataproducts/group-risk-data-aggregation",
+      "outputPortId": "group_risk_exposures_v1",
+      "outputPortName": "Group Risk Exposures (BCBS 239)",
+      "dataContractId": "group_risk_exposures_v1"
+     },
+     "schema": {
+      "_producer": "https://entropy-data.com",
+      "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json",
+      "fields": [
+       {
+        "name": "reporting_date",
+        "type": "date"
+       },
+       {
+        "name": "entity",
+        "type": "string"
+       },
+       {
+        "name": "risk_type",
+        "type": "string"
+       },
+       {
+        "name": "exposure_class",
+        "type": "string"
+       },
+       {
+        "name": "exposure_eur",
+        "type": "decimal(18,2)"
+       },
+       {
+        "name": "rwa_eur",
+        "type": "decimal(18,2)"
+       },
+       {
+        "name": "source_platform",
+        "type": "string"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ }
+]
