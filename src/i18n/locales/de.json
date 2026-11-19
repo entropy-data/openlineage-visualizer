@@ -24,7 +24,10 @@
     "maxSelected": "Maximal {{count}} Datenprodukte ausgewählt"
   },
   "job": {
-    "unassigned": "Nicht zugeordnet",
     "unassignedHint": "Kein Datenprodukt enthält dieses Item. Öffne sein Asset, um es zuzuordnen."
+  },
+  "group": {
+    "notAssigned": "Nicht zugeordnet",
+    "notAssignedHint": "Noch keinem Datenprodukt zugeordnet"
   }
 }

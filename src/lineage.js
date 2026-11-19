@@ -80,6 +80,15 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
     // An integration stores the lineage of an item that no data product holds without one; the run facet then names
     // only the item's asset. Such a job belongs to no product, whichever product's events it was loaded with.
     const unassigned = !!(runEntropyData?.assetId && !runEntropyData?.dataProductId);
+    // Such a job and what it writes get a frame of their own, the way a data product frames its jobs and tables,
+    // so the graph keeps its structure; the frame names the item's asset instead of a data product.
+    const assetGroup = unassigned ? {
+      id: `asset:${runEntropyData.assetId}`,
+      name: runEntropyData.assetName || job.name,
+      href: runEntropyData.assetHref,
+      jobType: jt.jobType,
+      integration: jt.integration,
+    } : undefined;
 
     if (!jobs.has(jobId)) {
       jobs.set(jobId, {
@@ -95,6 +104,7 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
           status,
           entropyData: runEntropyData || undefined,
           unassigned,
+          assetGroup,
         },
         producerProductExternalIds: new Set(),
         consumerProductExternalIds: new Set(),
@@ -158,6 +168,7 @@ export function openLineageToGraph(allEvents, contextProductExternalId = null) {
         if (dsEntropyData) d.entropyData = dsEntropyData;
       }
       if (!unassigned) tag(datasets.get(dsId), 'producer');
+      else if (!datasets.get(dsId).data.assetGroup) datasets.get(dsId).data.assetGroup = assetGroup;
       const outputOwner = dsEntropyData?.dataProductId;
       if (outputOwner) datasets.get(dsId).producerProductExternalIds.add(outputOwner);
       jobs.get(jobId).outEdges.push({ origin: jobId, destination: dsId });
@@ -194,6 +205,7 @@ export function mergeGraphs(perProductGraphs) {
         if (ed.status && !xd.status) xd.status = ed.status;
         if (ed.integration && !xd.integration) xd.integration = ed.integration;
         if (ed.jobType && !xd.jobType) xd.jobType = ed.jobType;
+        if (ed.assetGroup && !xd.assetGroup) xd.assetGroup = ed.assetGroup;
         existing.outEdges.push(...entry.outEdges);
       }
     }

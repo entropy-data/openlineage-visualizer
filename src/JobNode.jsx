@@ -1,6 +1,5 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { useTranslation } from 'react-i18next';
 import { ProductChipRow } from './ProductChip';
 
 const STATUS_COLORS = {
@@ -11,7 +10,6 @@ const STATUS_COLORS = {
 };
 
 export default function JobNode({ data }) {
-  const { t } = useTranslation();
   const statusColor = STATUS_COLORS[data.status] || STATUS_COLORS.RUNNING;
   const displayName = data.name.includes('.') ? data.name.split('.').pop() : data.name;
   const scoping = data.productScoping;
@@ -34,17 +32,6 @@ export default function JobNode({ data }) {
         <span className="ol-node-title" title={`${data.namespace}/${data.name}`}>{displayName}</span>
       </div>
       <ProductChipRow scoping={scoping} />
-      {data.unassigned && (
-        <div className="ol-product-chip-row">
-          {data.entropyData?.assetHref ? (
-            <a className="ol-badge ol-badge-unassigned nodrag" href={data.entropyData.assetHref} target="_top" title={t('job.unassignedHint')}>
-              {t('job.unassigned')}
-            </a>
-          ) : (
-            <span className="ol-badge ol-badge-unassigned" title={t('job.unassignedHint')}>{t('job.unassigned')}</span>
-          )}
-        </div>
-      )}
       <div className="ol-job-meta">
         {data.status && (
           <span

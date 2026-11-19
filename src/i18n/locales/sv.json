@@ -24,7 +24,10 @@
     "maxSelected": "Högst {{count}} produkter markerade"
   },
   "job": {
-    "unassigned": "Inte kopplad",
     "unassignedHint": "Ingen dataprodukt innehåller detta objekt. Öppna dess tillgång för att koppla den."
+  },
+  "group": {
+    "notAssigned": "Inte kopplad",
+    "notAssignedHint": "Ännu inte kopplad till någon dataprodukt"
   }
 }

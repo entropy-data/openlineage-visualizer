@@ -73,6 +73,7 @@ export async function getLayoutedElements({
 
   // 1. Bucket nodes by cluster.
   const childrenByCluster = new Map();
+  const assetGroups = new Map();
   const externalNodes = [];
   const clusterByNodeId = new Map();
   for (const node of rawNodes) {
@@ -80,7 +81,11 @@ export async function getLayoutedElements({
     const collapsed = collapsedSet.has(node.id);
     const h = getNodeHeight(node, collapsed);
     const producers = node.data.producerProductExternalIds || new Set();
-    const cluster = pickCluster(producers, selectedSet, currentProductExternalId);
+    // A data product frames a node first; a node no selected product holds may sit in the frame of the
+    // unassigned item (asset) that writes it.
+    const assetGroup = node.data.assetGroup;
+    const cluster = pickCluster(producers, selectedSet, currentProductExternalId) || assetGroup?.id || null;
+    if (assetGroup && cluster === assetGroup.id) assetGroups.set(assetGroup.id, assetGroup);
     const elkNode = { id: node.id, width: w, height: h };
     if (cluster) {
       clusterByNodeId.set(node.id, cluster);
@@ -144,6 +149,7 @@ export async function getLayoutedElements({
           externalId,
           info: productInfoMap?.get(externalId),
           color: productColorMap?.get(externalId),
+          assetGroup: assetGroups.get(externalId),
         },
         style: { width: c.width, height: c.height, zIndex: -1 },
         selectable: false,

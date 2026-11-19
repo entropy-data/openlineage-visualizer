@@ -92,16 +92,6 @@
   background: #f8fafc;
 }
 
-.ol-badge-unassigned {
-  background: #fef3c7;
-  color: #92400e;
-  text-decoration: none;
-}
-
-a.ol-badge-unassigned:hover {
-  text-decoration: underline;
-}
-
 .ol-badge-blue {
   background: #eff6ff;
   color: #2563eb;
@@ -828,6 +818,29 @@ a.ol-badge-unassigned:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.ol-product-group--asset {
+  border-style: dashed;
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+  box-shadow: none;
+}
+
+.ol-product-group--asset .ol-product-group-band {
+  background-color: #f1f5f9;
+  color: #475569;
+  border-bottom-color: #cbd5e1;
+}
+
+.ol-product-group-link {
+  display: block;
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.ol-product-group-link:hover {
+  text-decoration: underline;
 }
 
 .ol-product-group-team {
