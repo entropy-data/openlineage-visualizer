@@ -22,5 +22,12 @@
     "search": "Rechercher…",
     "restricted": "Restreint",
     "maxSelected": "{{count}} produits sélectionnés au maximum"
+  },
+  "job": {
+    "unassignedHint": "Aucun data product ne contient cet élément. Ouvrez son asset pour l'attribuer."
+  },
+  "group": {
+    "notAssigned": "Non attribué",
+    "notAssignedHint": "Encore attribué à aucun data product"
   }
 }

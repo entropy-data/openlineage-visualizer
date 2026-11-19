@@ -22,5 +22,12 @@
     "search": "Suchen…",
     "restricted": "Eingeschränkt",
     "maxSelected": "Maximal {{count}} Datenprodukte ausgewählt"
+  },
+  "job": {
+    "unassignedHint": "Kein Datenprodukt enthält dieses Item. Öffne sein Asset, um es zuzuordnen."
+  },
+  "group": {
+    "notAssigned": "Nicht zugeordnet",
+    "notAssignedHint": "Noch keinem Datenprodukt zugeordnet"
   }
 }

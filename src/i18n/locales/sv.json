@@ -22,5 +22,12 @@
     "search": "Sök…",
     "restricted": "Begränsad",
     "maxSelected": "Högst {{count}} produkter markerade"
+  },
+  "job": {
+    "unassignedHint": "Ingen dataprodukt innehåller detta objekt. Öppna dess tillgång för att koppla den."
+  },
+  "group": {
+    "notAssigned": "Inte kopplad",
+    "notAssignedHint": "Ännu inte kopplad till någon dataprodukt"
   }
 }

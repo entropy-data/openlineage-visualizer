@@ -22,5 +22,12 @@
     "search": "Search…",
     "restricted": "Restricted",
     "maxSelected": "Maximum {{count}} products selected"
+  },
+  "job": {
+    "unassignedHint": "No data product holds this item. Open its asset to assign it."
+  },
+  "group": {
+    "notAssigned": "Not assigned",
+    "notAssignedHint": "No data product holds this item yet"
   }
 }

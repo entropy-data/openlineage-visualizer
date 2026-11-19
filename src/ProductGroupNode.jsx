@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import IntegrationIcon from './IntegrationIcon';
 
 function formatArchetype(archetype) {
@@ -7,7 +8,39 @@ function formatArchetype(archetype) {
   return `DATA PRODUCT (${cleaned})`;
 }
 
+function formatItemType(assetGroup) {
+  const type = assetGroup.jobType || assetGroup.integration || '';
+  return type.replace(/[-_]/g, ' ').toUpperCase();
+}
+
+// The frame of an item no data product holds: drawn like a data product's, but neutral and dashed, and named
+// after the item's asset, which it links to.
+function AssetGroupNode({ assetGroup }) {
+  const { t } = useTranslation();
+  const type = formatItemType(assetGroup);
+  return (
+    <div className="ol-product-group ol-product-group--asset">
+      <div className="ol-product-group-band">
+        {type ? `${type} · ${t('group.notAssigned')}` : t('group.notAssigned')}
+      </div>
+      <div className="ol-product-group-header">
+        <div className="ol-product-group-titles">
+          {assetGroup.href ? (
+            <a className="ol-product-group-name ol-product-group-link nodrag" href={assetGroup.href} target="_top" title={t('job.unassignedHint')}>
+              {assetGroup.name}
+            </a>
+          ) : (
+            <div className="ol-product-group-name">{assetGroup.name}</div>
+          )}
+          <div className="ol-product-group-team">{t('group.notAssignedHint')}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProductGroupNode({ data }) {
+  if (data.assetGroup) return <AssetGroupNode assetGroup={data.assetGroup} />;
   const stripe = data.color?.stripe || '#94a3b8';
   const tint = data.color?.chipBg || '#f1f5f9';
   const labelText = data.color?.chipText || '#475569';

@@ -17,7 +17,7 @@ export default function JobNode({ data }) {
 
   return (
     <div
-      className={`ol-node ol-job-node${data.dimmed ? ' ol-node--dimmed' : ''}${stripeColor ? ' ol-node--has-stripe' : ''}`}
+      className={`ol-node ol-job-node${data.unassigned ? ' ol-job-node--unassigned' : ''}${data.dimmed ? ' ol-node--dimmed' : ''}${stripeColor ? ' ol-node--has-stripe' : ''}`}
       style={stripeColor ? { borderLeftColor: stripeColor } : undefined}
     >
       <Handle type="target" position={Position.Left} />
