@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useStore } from '@xyflow/react';
 import IntegrationIcon from './IntegrationIcon';
 import { MAX_SELECTED } from './limits';
 
@@ -44,6 +45,9 @@ function AssetGroupNode({ assetGroup }) {
 // reading it (right) into the view, one step at a time instead of the whole lineage at once. Hidden when all are shown.
 function ExpandButton({ side, ids, onExpand, canExpand, color }) {
   const { t } = useTranslation();
+  // The canvas scales nodes with its zoom, which shrank the button to a few pixels on a zoomed-out view. Scaling it by
+  // the inverse keeps it the same size on screen at any zoom, anchored at the frame's edge.
+  const zoom = useStore((state) => state.transform[2]);
   if (!ids || ids.length === 0 || !onExpand) return null;
   const title = canExpand
     ? t(side === 'upstream' ? 'group.expandUpstream' : 'group.expandDownstream', { count: ids.length })
@@ -52,7 +56,12 @@ function ExpandButton({ side, ids, onExpand, canExpand, color }) {
     <button
       type="button"
       className={`ol-product-expand ol-product-expand--${side} nodrag nopan`}
-      style={{ borderColor: color, color }}
+      style={{
+        borderColor: color,
+        color,
+        transform: `scale(${1 / (zoom || 1)})`,
+        transformOrigin: side === 'upstream' ? 'right top' : 'left top',
+      }}
       title={title}
       aria-label={title}
       disabled={!canExpand}
