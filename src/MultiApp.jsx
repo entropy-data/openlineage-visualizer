@@ -1,12 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import LineageCanvas from './LineageCanvas';
 import PickerPanel from './PickerPanel';
 import { openLineageToGraph, mergeGraphs, buildProductColorMap } from './lineage';
+import { MAX_SELECTED } from './limits';
+import { hiddenNeighbours, expandSelection } from './expand';
 
-const MAX_SELECTED = 10;
 
 // `loadEvents` is a function (externalId) => Promise<{ accessible, events }>.
-// `dataProducts` is an array of { externalId, name, icon, eventCount, accessible, href }.
+// `dataProducts` is an array of { externalId, name, icon, eventCount, accessible, href, upstream, downstream }, where
+// `upstream` and `downstream` (optional) list the external IDs of the data products whose lineage feeds this one's
+// and reads it: the frame of a shown product offers to expand to them, one step at a time.
 export default function MultiApp({
   dataProducts = [],
   currentProductExternalId = null,
@@ -116,6 +119,13 @@ export default function MultiApp({
     });
   };
 
+  // Expanding adds the neighbours to the selection like ticking them in the picker, up to the maximum.
+  const onExpand = useCallback((externalIds) => {
+    setSelected((prev) => expandSelection(prev, externalIds, MAX_SELECTED));
+  }, []);
+
+  const expandMap = useMemo(() => hiddenNeighbours(dataProducts, selected), [dataProducts, selected]);
+
   const productInfoMap = useMemo(() => {
     const m = new Map();
     for (const p of dataProducts) {
@@ -174,6 +184,9 @@ export default function MultiApp({
             hoveredProductExternalId={hoveredProduct}
             selectedProductExternalIds={[...selected]}
             currentProductExternalId={currentProductExternalId}
+            expandMap={expandMap}
+            onExpand={onExpand}
+            canExpand={selected.size < MAX_SELECTED}
           />
         ) : (
           <EmptyState selected={selected} perProduct={perProduct} />

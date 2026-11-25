@@ -31,6 +31,10 @@
   },
   "group": {
     "notAssigned": "Inte kopplad",
-    "notAssignedHint": "Ännu inte kopplad till någon dataprodukt"
+    "notAssignedHint": "Ännu inte kopplad till någon dataprodukt",
+    "expandUpstream_one": "Visa dataprodukten som matar denna",
+    "expandUpstream_other": "Visa de {{count}} dataprodukter som matar denna",
+    "expandDownstream_one": "Visa dataprodukten som använder denna",
+    "expandDownstream_other": "Visa de {{count}} dataprodukter som använder denna"
   }
 }
