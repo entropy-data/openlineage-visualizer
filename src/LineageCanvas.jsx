@@ -74,6 +74,9 @@ export default function LineageCanvas({
   hoveredProductExternalId,
   selectedProductExternalIds,
   currentProductExternalId,
+  expandMap,
+  onExpand,
+  canExpand = true,
 }) {
   const [selectedNode, setSelectedNode] = useState(null);
   const [collapsedNodes, setCollapsedNodes] = useState(new Set());
@@ -157,7 +160,13 @@ export default function LineageCanvas({
         const matched = !hoveredProductExternalId || node.data.externalId === hoveredProductExternalId;
         return {
           ...node,
-          data: { ...node.data, dimmed: !matched },
+          data: {
+            ...node.data,
+            dimmed: !matched,
+            expand: expandMap?.get(node.data.externalId),
+            onExpand,
+            canExpand,
+          },
         };
       }
       const producerIds = node.data.producerProductExternalIds || new Set();
@@ -192,7 +201,7 @@ export default function LineageCanvas({
         },
       };
     });
-  }, [layouted, columnLineageMap, highlightedJobIds, onFieldClick, productColorMap, productInfoMap, hoveredProductExternalId]);
+  }, [layouted, columnLineageMap, highlightedJobIds, onFieldClick, productColorMap, productInfoMap, hoveredProductExternalId, expandMap, onExpand, canExpand]);
 
   const edges = useMemo(() => {
     if (!columnLineageMap) return layouted.edges;

@@ -31,6 +31,10 @@
   },
   "group": {
     "notAssigned": "Non attribué",
-    "notAssignedHint": "Encore attribué à aucun data product"
+    "notAssignedHint": "Encore attribué à aucun data product",
+    "expandUpstream_one": "Afficher le data product qui alimente celui-ci",
+    "expandUpstream_other": "Afficher les {{count}} data products qui alimentent celui-ci",
+    "expandDownstream_one": "Afficher le data product qui utilise celui-ci",
+    "expandDownstream_other": "Afficher les {{count}} data products qui utilisent celui-ci"
   }
 }

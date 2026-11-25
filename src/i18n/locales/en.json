@@ -31,6 +31,10 @@
   },
   "group": {
     "notAssigned": "Not assigned",
-    "notAssignedHint": "No data product holds this item yet"
+    "notAssignedHint": "No data product holds this item yet",
+    "expandUpstream_one": "Show the data product that feeds this one",
+    "expandUpstream_other": "Show the {{count}} data products that feed this one",
+    "expandDownstream_one": "Show the data product that uses this one",
+    "expandDownstream_other": "Show the {{count}} data products that use this one"
   }
 }

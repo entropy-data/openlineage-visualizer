@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const MAX_SELECTED = 10;
+import { MAX_SELECTED } from './limits';
 
 export default function PickerPanel({
   items,
